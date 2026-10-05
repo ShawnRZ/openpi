@@ -1,0 +1,22 @@
+services:
+  openpi_server:
+    image: image.ac.com:5000/gpu/cit_zexuanren/base/ubuntu:22.04
+    tty: true
+    network_mode: host
+    # 相对路径以本 compose.yml 所在目录为基准，".." 即项目根目录 openpi/
+    working_dir: /app
+    volumes:
+      - ..:/app
+      - /home/shawn/文档/Dataset/lerobot:/dataset
+    environment:
+      - UV_PROJECT_ENVIRONMENT=/.venv
+      - HF_HUB_OFFLINE=1
+      - HF_LEROBOT_HOME=/dataset
+    command: sleep infinity
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [ gpu ]
